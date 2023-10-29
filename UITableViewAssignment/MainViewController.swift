@@ -13,7 +13,7 @@ struct Album {
     let image: UIImage
 }
 
-class MainViewController: UIViewController {
+final class MainViewController: UIViewController {
     private var albums: [Album] = [
         Album(name: "Disorder", artist: "Joy Division", image: UIImage(named: "Disorder") ?? UIImage()),
         Album(name: "OK Computer", artist: "Radiohead", image: UIImage(named: "Ok Computer") ?? UIImage()),
