@@ -75,6 +75,22 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
         navigationController?.pushViewController(itemDetailsVC, animated: true)
         tableView.deselectRow(at: indexPath, animated: true)
     }
+    
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let deleteAction = UIContextualAction(style: .destructive, title: "Delete") { (contextualAction, view, boolValue) in
+            self.albums.remove(at: indexPath.row)
+            self.tableView.deleteRows(at: [indexPath], with: .automatic)
+        }
+        
+        let swipeActions = UISwipeActionsConfiguration(actions: [deleteAction])
+        
+        return swipeActions
+    }
+
 }
 
 extension MainViewController: AddNewItemDelegate {
