@@ -90,13 +90,21 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
         
         return swipeActions
     }
-
+    
+    func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+    
+    func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
+        albums.swapAt(sourceIndexPath.row, destinationIndexPath.row)
+    }
 }
 
 extension MainViewController: AddNewItemDelegate {
     private func setUpNavigationBar() {
         navigationItem.title = "Favorite Albums"
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addButtonTapped))
+        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Sort", style: .plain, target: self, action: #selector(editButtonTapped))
     }
 
     @objc private func addButtonTapped() {
@@ -104,6 +112,16 @@ extension MainViewController: AddNewItemDelegate {
         addNewItemVC.delegate = self
         let navigationController = UINavigationController(rootViewController: addNewItemVC)
         present(navigationController, animated: true)
+    }
+    
+    @objc private func editButtonTapped() {
+        if tableView.isEditing {
+            tableView.isEditing = false
+            navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Sort", style: .plain, target: self, action: #selector(editButtonTapped))
+        } else {
+            tableView.isEditing = true
+            navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Done", style: .plain, target: self, action: #selector(editButtonTapped))
+        }
     }
 
     func addItemToList(name: String, image: UIImage?) {
